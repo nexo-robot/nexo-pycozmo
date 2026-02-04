@@ -3,3 +3,4 @@ dpkt
 numpy
 Pillow>=10.3.0
 flatbuffers
+packaging

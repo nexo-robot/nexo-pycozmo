@@ -10,10 +10,52 @@ References:
 
 from typing import BinaryIO, Iterable, Dict, Any
 import struct
-from chunk import Chunk
 
 from . import exception
 from . import soundbanksinfo
+
+
+class Chunk:
+    def __init__(self, file, bigendian=True, align=True):
+        self.file = file
+        self.align = align
+        self.chunkname = file.read(4)
+        if len(self.chunkname) < 4:
+            raise EOFError
+        fmt = '>L' if bigendian else '<L'
+        data = file.read(4)
+        if len(data) < 4:
+            raise EOFError
+        self.chunksize = struct.unpack(fmt, data)[0]
+        self.size_read = 0
+
+    def getname(self):
+        return self.chunkname
+
+    def getsize(self):
+        return self.chunksize
+
+    def read(self, size=-1):
+        if size < 0:
+            size = self.chunksize - self.size_read
+        if self.size_read + size > self.chunksize:
+            size = self.chunksize - self.size_read
+        if size <= 0:
+            return b""
+        data = self.file.read(size)
+        self.size_read += len(data)
+        return data
+
+    def skip(self):
+        to_skip = self.chunksize - self.size_read
+        if to_skip > 0:
+            try:
+                self.file.seek(to_skip, 1)
+            except (AttributeError, ValueError):
+                self.file.read(to_skip)
+            self.size_read = self.chunksize
+        if self.align and (self.chunksize & 1):
+            self.file.read(1)
 
 
 class File:
