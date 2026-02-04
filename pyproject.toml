@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=70.3.0", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nexo-pycozmo"
+# On récupère la version dynamiquement dans le fichier __init__.py
+dynamic = ["version"]
+description = "A pure-Python communication library, alternative SDK, and application for the Cozmo robot."
+readme = "README.md"
+authors = [
+    { name = "Baptiste P", email = "contact@arrera-software.fr" }
+]
+license = { text = "MIT" }
+keywords = ["ddl", "anki", "cozmo", "robot", "robotics"]
+requires-python = ">=3.13"
+dependencies = [
+    "dpkt",
+    "numpy",
+    "Pillow>=10.3.0",
+    "flatbuffers",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+]
+
+[project.urls]
+Homepage = "https://github.com/nexo-robot/nexo-pycozmo"
+
+# Remplacement de l'argument 'scripts' par des points d'entrée plus modernes
+[project.scripts]
+pycozmo_dump = "tools.pycozmo_dump:main"
+pycozmo_replay = "tools.pycozmo_replay:main"
+pycozmo_update = "tools.pycozmo_update:main"
+pycozmo_resources = "tools.pycozmo_resources:main"
+pycozmo_app = "tools.pycozmo_app:main"
+
+[tool.setuptools.dynamic]
+version = {attr = "pycozmo.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["."]
