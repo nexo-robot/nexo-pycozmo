@@ -39,7 +39,7 @@ from . import audiokinetic
 from . import expressions
 
 
-__version__ = "0.8.0"
+__version__ = "0.0.0"
 
 __all__ = [
     "logger",
@@ -54,6 +54,6 @@ __all__ = [
     "connect",
 ]
 
-if sys.version_info < (3, 6, 0):
-    sys.exit("ERROR: PyCozmo requires Python 3.6.0 or newer.")
+if not (sys.version_info.major == 3 and sys.version_info.minor in (13, 14)):
+    sys.exit("ERROR: PyCozmo requires Python 3.13 or 3.14.")
 del sys
